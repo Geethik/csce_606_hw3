@@ -31,11 +31,8 @@ class MoviesController < ApplicationController
       end
     else
       @checked=params[:ratings]
+      @movies = Movie.where({rating: @checked.keys})
     end
-    
-    @movies = Movie.where({rating: @checked.keys})  
-      
-    
     
   end
 
