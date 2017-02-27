@@ -11,7 +11,9 @@ class MoviesController < ApplicationController
   end
 
   def index
+    
     @movies = Movie.all
+    
     if params[:title_click]=="yes"
       @title_class_clicked="hilite"
       @movies = Movie.all.order(:title)
@@ -19,6 +21,22 @@ class MoviesController < ApplicationController
       @release_date_class_clicked="hilite"
       @movies = Movie.all.order(:release_date)
     end
+    
+    @all_ratings = Movie.distinct.pluck(:rating)
+    
+    if params[:ratings]==nil
+      @checked = Hash.new()
+      @all_ratings.each do |rating|
+        @checked[rating]=1
+      end
+    else
+      @checked=params[:ratings]
+    end
+    
+    @movies = Movie.where({rating: @checked.keys})  
+      
+    
+    
   end
 
   def new
